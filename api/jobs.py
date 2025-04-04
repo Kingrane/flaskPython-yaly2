@@ -34,3 +34,8 @@ def get_job_by_id(job_id):
     if job is not None:
         return jsonify(job.to_dict())
     return make_response(404, "No such job")
+
+
+@blueprint.app_errorhandler(404)
+def error_not_found(e):
+    return make_response(jsonify({'error': e.description}), 404)
