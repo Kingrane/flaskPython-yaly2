@@ -46,10 +46,14 @@ def add_jobs():
     if request.json:
         j = Jobs()
         j.job = request.json["job"]
-        j.work_size = request.json["work_size"]
+        j.work_size = int(request.json["work_size"])
         j.collaborators = request.json["collaborators"]
-        j.is_finished = request.json["is_finished"]
-        j.team_leader = request.json["team_leader"]
+        j.is_finished = bool(request.json["is_finished"])
+        j.team_leader = int(request.json["team_leader"])
+        sess = db_session.create_session()
+        sess.add(j)
+        sess.commit()
+        return make_response(jsonify({"ok": j.id}), 201)
 
     return flask.abort(500)
 
