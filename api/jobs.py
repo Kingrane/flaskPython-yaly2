@@ -1,5 +1,5 @@
 import flask
-from flask import jsonify, make_response
+from flask import jsonify, make_response, request
 from data import db_session
 from data.jobs import Jobs
 
@@ -39,3 +39,26 @@ def get_job_by_id(job_id):
 @blueprint.app_errorhandler(404)
 def error_not_found(e):
     return make_response(jsonify({'error': e.description}), 404)
+
+
+@blueprint.route('/api/jobs', methods=['POST'])
+def add_jobs():
+    if request.json:
+        j = Jobs()
+        j.job = request.json["job"]
+        j.work_size = request.json["work_size"]
+        j.collaborators = request.json["collaborators"]
+        j.is_finished = request.json["is_finished"]
+        j.team_leader = request.json["team_leader"]
+
+    return flask.abort(500)
+
+
+@blueprint.route('/api/jobs', methods=['PUT'])
+def change_jobs():
+    return flask.abort(500)
+
+
+@blueprint.route('/api/jobs', methods=['DELETE'])
+def delete_jobs():
+    return flask.abort(500)
